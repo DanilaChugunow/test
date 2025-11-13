@@ -1,0 +1,21 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+h1, h2, h3, p{
+    padding: 0;
+    margin: 0;
+}
+ul, ol{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+button{
+    border: none;
+}
+.container{
+    max-width: 1280px;
+    margin: 0 auto;
+}
