@@ -2716,6 +2716,7 @@ footer .footer .footer__social ul li:last-child {
     border-radius: 8px;
   }
   .otdel__info .cards .card .card__info .card__map {
+    display: none;
     flex: none;
     width: 100%;
     max-width: 100%;
