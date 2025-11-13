@@ -88,24 +88,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	tabButtons.forEach(btn => {
 		btn.addEventListener('click', function () {
-			// Убираем активные классы
 			tabButtons.forEach(b => b.classList.remove('active'));
 			tabContents.forEach(tc => {
 				tc.classList.remove('active');
 				tc.style.animation = 'none';
 			});
 			
-			// Добавляем активный класс кнопке
 			btn.classList.add('active');
 			
-			// Находим нужный контент
 			const tabId = btn.getAttribute('data-tab');
 			const targetContent = document.getElementById(tabId);
 			
-			// Принудительный рефлоу для сброса анимации
 			targetContent.offsetHeight;
 			
-			// Добавляем активный класс с небольшой задержкой
 			setTimeout(() => {
 				targetContent.classList.add('active');
 			}, 10);
@@ -113,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
-// Анимации при прокрутке
 document.addEventListener('DOMContentLoaded', function() {
     const observerOptions = {
         threshold: 0.05,
@@ -124,35 +118,30 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Убираем наблюдение после анимации для производительности
                 observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Функция для проверки видимости элемента при загрузке
+   
     function checkInitialVisibility(element) {
-        // Используем requestAnimationFrame для более точной проверки после отрисовки
         const rect = element.getBoundingClientRect();
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
         const windowWidth = window.innerWidth || document.documentElement.clientWidth;
         
-        // Проверяем, виден ли элемент в области просмотра (с небольшим запасом сверху)
-        // Учитываем, что элемент должен быть виден хотя бы на 10% своей высоты
         const elementHeight = rect.height || element.offsetHeight;
         const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
         const visiblePercent = elementHeight > 0 ? (visibleHeight / elementHeight) * 100 : 0;
         
         return (
-            rect.top < windowHeight + 100 && // Небольшой запас снизу
-            rect.bottom > -100 && // Небольшой запас сверху
+            rect.top < windowHeight + 100 && 
+            rect.bottom > -100 && 
             rect.left < windowWidth &&
             rect.right > 0 &&
-            visiblePercent > 5 // Элемент должен быть виден хотя бы на 5%
+            visiblePercent > 5 
         );
     }
 
-    // Функция для добавления анимации с проверкой начальной видимости
     function addAnimationWithCheck(selector, animationClass = 'animate-on-scroll', useRAF = true) {
         const elements = document.querySelectorAll(selector);
         
@@ -160,12 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
             elements.forEach((el, index) => {
                 el.classList.add(animationClass);
                 
-                // Проверяем, виден ли элемент сразу
                 if (checkInitialVisibility(el)) {
-                    // Если элемент уже виден, добавляем класс visible сразу
                     el.classList.add('visible');
                 } else {
-                    // Если элемент не виден, наблюдаем за ним
                     observer.observe(el);
                 }
             });
@@ -178,15 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Добавляем классы анимации к основным секциям
     const animatedElements = document.querySelectorAll('.information, .video-section, .slider-section, .tabs, footer, .otdel__info');
     
-    // Используем requestAnimationFrame для секций, чтобы они проверялись после отрисовки
     requestAnimationFrame(function() {
         animatedElements.forEach(el => {
             el.classList.add('animate-on-scroll');
             if (checkInitialVisibility(el)) {
-                // Секция видна сразу - делаем её видимой сразу
                 el.classList.add('visible');
             } else {
                 observer.observe(el);
@@ -194,51 +177,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Анимации для подэлементов с разными типами
     addAnimationWithCheck('.hist, .put, .slide-photos, .tab-content');
 
-    // Анимации для заголовков
     addAnimationWithCheck('.information h2, .video-section h2, .slider-section h2, .otdel__info h2');
 
-    // Анимации для карточек - это критично для страницы chram.html
     const otdelInfo = document.querySelector('.otdel__info');
     const cards = document.querySelectorAll('.otdel__info .cards .card');
-    
-    // Функция для показа карточек в видимой секции
+ 
     function showVisibleCards() {
         if (!otdelInfo || cards.length === 0) return;
-        
-        // Получаем координаты секции
+  
         const sectionRect = otdelInfo.getBoundingClientRect();
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        
-        // Проверяем, находится ли секция в видимой области (даже частично)
+     
         const sectionVisible = sectionRect.top < windowHeight + 300 && sectionRect.bottom > -100;
         
         if (sectionVisible) {
-            // Если секция видна (даже частично), добавляем класс visible к секции
             otdelInfo.classList.add('visible');
             
-            // Показываем все карточки, которые находятся в видимой области или близко к ней
             cards.forEach((card) => {
                 if (!card.classList.contains('animate-on-scroll')) {
                     card.classList.add('animate-on-scroll');
                 }
                 
                 const cardRect = card.getBoundingClientRect();
-                // Более либеральная проверка: карточка видна, если она находится выше нижней границы окна + запас
+               
                 const isCardVisible = cardRect.top < windowHeight + 400 && cardRect.bottom > -200;
                 
                 if (isCardVisible && !card.classList.contains('visible')) {
-                    // Если карточка видна, показываем её немедленно
+                  
                     card.classList.add('visible');
                 } else if (!isCardVisible && !card.classList.contains('visible')) {
-                    // Если карточка не видна, наблюдаем за ней
+                   
                     observer.observe(card);
                 }
             });
         } else {
-            // Если секция не видна, добавляем класс animate-on-scroll и наблюдаем за карточками
+           
             cards.forEach((card) => {
                 if (!card.classList.contains('animate-on-scroll')) {
                     card.classList.add('animate-on-scroll');
@@ -250,22 +225,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Немедленная проверка для карточек (критично для chram.html)
+    
     if (cards.length > 0) {
-        // Если страница в верхней части (начало страницы), показываем элементы сразу
+      
         const isPageAtTop = window.scrollY < 100;
         
         if (isPageAtTop && otdelInfo) {
-            // На странице chram.html секция обычно начинается сразу после header
-            // Показываем секцию сразу
             otdelInfo.classList.add('visible');
             
-            // Показываем первые несколько карточек сразу без задержки
             cards.forEach((card, index) => {
-                // Для первых карточек добавляем класс visible ПЕРЕД animate-on-scroll,
-                // чтобы избежать момента, когда элемент становится невидимым
+               
                 if (index < 3) {
-                    // Добавляем visible сразу, затем animate-on-scroll
                     card.classList.add('visible', 'animate-on-scroll');
                 } else if (index < 6) {
                     card.classList.add('animate-on-scroll');
@@ -279,27 +249,25 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Используем requestAnimationFrame для более точной проверки после отрисовки
+   
         requestAnimationFrame(function() {
             showVisibleCards();
         });
         
-        // Множественные проверки для гарантии
+     
         setTimeout(showVisibleCards, 10);
         setTimeout(showVisibleCards, 50);
         setTimeout(showVisibleCards, 100);
         setTimeout(showVisibleCards, 200);
     }
     
-    // Наблюдаем за самой секцией, чтобы при её появлении показывать карточки
+ 
     if (otdelInfo) {
         observer.observe(otdelInfo);
         
-        // Когда секция становится видимой, проверяем карточки
         const sectionObserver = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Секция стала видимой - показываем все видимые карточки
                     setTimeout(() => {
                         cards.forEach((card) => {
                             if (!card.classList.contains('visible') && checkInitialVisibility(card)) {
@@ -314,21 +282,15 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionObserver.observe(otdelInfo);
     }
 
-    // Анимации для изображений в карточках
     addAnimationWithCheck('.card__photo, .card__map');
 
-    // Анимации для изображений в слайдере
     addAnimationWithCheck('.slide img, .slide-photos img');
 
-    // Анимации для видео
     addAnimationWithCheck('.video-wrapper');
 
-    // Анимации для параграфов в карточках
     addAnimationWithCheck('.card p, .card h3, .card ul');
 
-    // Дополнительная проверка после загрузки страницы
     function finalVisibilityCheck() {
-        // Особое внимание к карточкам на странице chram.html
         const allCards = document.querySelectorAll('.otdel__info .cards .card.animate-on-scroll:not(.visible)');
         allCards.forEach(card => {
             if (checkInitialVisibility(card)) {
@@ -336,10 +298,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Проверяем другие элементы
         const allAnimated = document.querySelectorAll('.animate-on-scroll:not(.visible)');
         allAnimated.forEach(el => {
-            // Пропускаем карточки, они уже обработаны
             if (el.classList.contains('card')) return;
             
             if (checkInitialVisibility(el)) {
@@ -350,35 +310,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Проверка после небольшой задержки (двойная для надежности)
     setTimeout(finalVisibilityCheck, 50);
     setTimeout(finalVisibilityCheck, 150);
     
-    // Проверка после полной загрузки страницы
     if (document.readyState === 'complete') {
         setTimeout(finalVisibilityCheck, 200);
     } else {
         window.addEventListener('load', function() {
             setTimeout(finalVisibilityCheck, 200);
-            // Дополнительная проверка после загрузки
             setTimeout(finalVisibilityCheck, 500);
         });
     }
     
-    // Дополнительная проверка при изменении размера окна
     let resizeTimeout;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(finalVisibilityCheck, 100);
     });
     
-    // Финальная проверка через requestAnimationFrame для гарантии
     requestAnimationFrame(function() {
         setTimeout(finalVisibilityCheck, 100);
     });
 });
 
-// Эффект изменения header при прокрутке
 document.addEventListener('DOMContentLoaded', function() {
     const headerTop = document.querySelector('.header__top');
     
@@ -393,7 +347,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Параллакс эффект для header
 document.addEventListener('DOMContentLoaded', function() {
     const headerBottom = document.querySelector('.header__bottom');
     
@@ -410,7 +363,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Улучшенные анимации для слайдера
 document.addEventListener('DOMContentLoaded', function () {
     const slides = document.querySelectorAll('.slide');
     const prevBtn = document.querySelector('.slider-btn.prev');
@@ -419,18 +371,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showSlide(idx) {
         slides.forEach((slide, i) => {
-            // Убираем все классы состояний
+           
             slide.classList.remove('active', 'prev', 'next');
             
             if (i === idx) {
-                // Активный слайд
+              
                 slide.classList.add('active');
                 slide.style.animation = 'slideInFromRight 0.8s ease-out';
             } else if (i === idx - 1 || (idx === 0 && i === slides.length - 1)) {
-                // Предыдущий слайд
+              
                 slide.classList.add('prev');
             } else if (i === idx + 1 || (idx === slides.length - 1 && i === 0)) {
-                // Следующий слайд
+               
                 slide.classList.add('next');
             }
         });
@@ -449,18 +401,14 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function showSlideWithDirection(idx, direction) {
         slides.forEach((slide, i) => {
-            // Убираем все классы и анимации
             slide.classList.remove('active', 'slide-in-left', 'slide-in-right');
             slide.style.animation = 'none';
             
             if (i === idx) {
-                // Активный слайд
-                slide.classList.add('active');
-                
-                // Принудительный рефлоу для сброса анимации
+                slide.classList.add('active'); 
+            
                 slide.offsetHeight;
-                
-                // Добавляем анимацию через inline стили
+            
                 setTimeout(() => {
                     if (direction === 'left') {
                         slide.style.animation = 'slideInFromLeft 0.8s ease-out';
@@ -473,7 +421,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Плавная прокрутка для навигации
 document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('a[href^="#"]');
     
@@ -493,7 +440,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Анимация загрузки страницы
 window.addEventListener('load', function() {
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease-in-out';

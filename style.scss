@@ -3,109 +3,6 @@
 @import "slider";
 @import "tabs";
 
-/* =========================
-     Mobile performance helpers
-     - Responsive base font
-     - Responsive images/video
-     - Disable heavy animations/effects on small screens
-     - Respect prefers-reduced-motion
-     Note: эти правила направлены на улучшение работы на телефонах;
-     при желании можно изменить порог в media query (768px).
-     ========================= */
-
-:root {
-    --base-font-size: 16px;
-}
-
-html {
-    /* responsive base font: mobile-first */
-    font-size: clamp(14px, 1.6vw, 18px);
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-}
-
-/* Make images, videos and iframes responsive */
-img, picture, video, iframe {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-}
-
-/* Remove the tap highlight on mobile and prefer touch-friendly behaviour */
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-body {
-    /* Avoid fixed backgrounds (expensive on mobile) */
-    background-attachment: scroll !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    touch-action: manipulation;
-}
-
-/* Reduce heavy rendering on small screens */
-@media (max-width: 768px) {
-    /* Avoid costly paint/layout triggers */
-    *, *::before, *::after {
-        will-change: auto !important;
-    }
-
-    /* Disable non-essential animations and transitions on phones */
-    [class*="animate"], .animated, .fade, .slide, .float, .pulse, .glow, .shimmer {
-        animation: none !important;
-        transition: none !important;
-    }
-
-    /* Reduce shadows and filters that cause repaints */
-    * {
-        box-shadow: none !important;
-        filter: none !important;
-        backface-visibility: hidden;
-    }
-
-    /* Simpler paddings for small screens */
-    .container, .wrapper {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    /* Make scroll behave smoothly on iOS and avoid janky transforms */
-    nav, header, footer, .tabs, .slider {
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* Slide elements: avoid extra transforms on phones */
-    .slider .slide {
-        transform: none !important;
-        will-change: auto !important;
-    }
-
-    /* Touch friendly controls */
-    .burger, .menu {
-        touch-action: manipulation;
-    }
-
-    button, a {
-        -webkit-tap-highlight-color: transparent;
-    }
-}
-
-/* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* End mobile performance helpers */
-
-// Анимации и переходы
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -204,7 +101,6 @@ body {
     }
 }
 
-// Дополнительные анимации для подвижных элементов
 @keyframes float {
     0%, 100% {
         transform: translateY(0px);
@@ -565,8 +461,6 @@ body {
     }
 }
 
-
-// Базовые классы для анимаций
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);
@@ -626,7 +520,6 @@ body {
     }
 }
 
-// Дополнительные классы для анимаций при прокрутке
 .animate-float {
     animation: float 3s ease-in-out infinite;
 }
@@ -684,7 +577,6 @@ body {
     opacity: 0;
     transform: scale(0.5);
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
     &.visible {
         opacity: 1;
         transform: scale(1);
@@ -708,7 +600,6 @@ body {
     opacity: 0;
     transform: scale(0.8) translateY(20px);
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
     &.visible {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -720,7 +611,6 @@ body {
     opacity: 0;
     transform: translateY(-100px);
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
     &.visible {
         opacity: 1;
         transform: translateY(0);
@@ -733,7 +623,6 @@ body {
     will-change: transform;
 }
 
-// Классы для постоянных анимаций
 .float-element {
     animation: float 4s ease-in-out infinite;
 }
@@ -790,7 +679,6 @@ body{
     position: relative;
     overflow-x: hidden;
     
-    // Декоративные плавающие элементы на фоне
     &::before {
         content: '';
         position: fixed;
@@ -822,14 +710,13 @@ body{
     }
 }
 
-// Анимация для прокрутки страницы
 html {
     scroll-behavior: smooth;
 }
+
 header{
     position: relative;
     z-index: 100;
-    
     .header__top{
         padding-top: 18px;
         background: linear-gradient(135deg, 
@@ -843,8 +730,6 @@ header{
         animation: slideInFromTop 0.8s ease-out;
         transition: all 0.3s ease;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-        
-        // Эффект изменения при прокрутке
         &.scrolled {
             padding-top: 12px;
             padding-bottom: 12px;
@@ -853,8 +738,6 @@ header{
                 rgba(250, 235, 215, 0.98) 0%, 
                 rgba(245, 230, 210, 0.95) 100%);
         }
-        
-        // Декоративный градиент на header
         &::before {
             content: '';
             position: absolute;
@@ -869,30 +752,24 @@ header{
             animation: shimmer 5s infinite;
             pointer-events: none;
         }
-        
         .menu{
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 1;
-            
             ul{
                 display: flex;
-                
                 li{
                     margin-right: 26px;
                     animation: fadeInUp 0.8s ease-out;
                     animation-fill-mode: both;
-                    
-                    // Задержки для элементов меню
                     &:nth-child(1) { animation-delay: 0.1s; }
                     &:nth-child(2) { animation-delay: 0.2s; }
                     &:nth-child(3) { animation-delay: 0.3s; }
                     &:nth-child(4) { animation-delay: 0.4s; }
                     &:nth-child(5) { animation-delay: 0.5s; }
                     &:nth-child(6) { animation-delay: 0.6s; }
-                    
                     a{
                         color: black;
                         font-size: 24px;
@@ -903,8 +780,6 @@ header{
                         position: relative;
                         display: inline-block;
                         overflow: hidden;
-                        
-                        // Эффект подчеркивания
                         &::before {
                             content: '';
                             position: absolute;
@@ -917,7 +792,6 @@ header{
                             transform: translateX(-50%);
                         }
                         
-                        // Фоновый эффект при наведении
                         &::after {
                             content: '';
                             position: absolute;
@@ -971,9 +845,7 @@ header{
         margin-bottom: 24px;
         position: relative;
         overflow: hidden;
-        background-attachment: fixed; // Параллакс эффект
-        
-        // Анимация фона при прокрутке
+        background-attachment: fixed; 
         &::before {
             content: '';
             position: absolute;
@@ -989,8 +861,6 @@ header{
             animation: gradientShift 10s ease infinite;
             z-index: 1;
         }
-        
-        // Дополнительный слой для глубины
         &::after {
             content: '';
             position: absolute;
@@ -1022,7 +892,6 @@ header{
                     animation: scaleBounce 1s ease-out 0.6s both;
                     position: relative;
                     
-                    // Декоративные элементы вокруг логотипа
                     &::before {
                         content: '';
                         position: absolute;
@@ -1091,23 +960,6 @@ header{
                     margin-top: 20px;
                     position: relative;
                     
-                    // Декоративная линия под текстом
-                    &::after {
-                        content: '';
-                        position: absolute;
-                        bottom: -10px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        width: 0;
-                        height: 2px;
-                        background: linear-gradient(90deg, 
-                            transparent, 
-                            rgba(0, 136, 255, 0.8), 
-                            transparent);
-                        animation: slideUp 1s ease-out 1.5s both;
-                        animation-fill-mode: forwards;
-                    }
-                    
                     &:hover {
                         transform: translateY(-5px) scale(1.02);
                         text-shadow: 
@@ -1136,7 +988,6 @@ header{
         position: relative;
         transition: all 0.4s ease;
         
-        // Анимация при прокрутке
         &.animate-on-scroll {
             opacity: 0;
             transform: translateY(30px);
@@ -1146,22 +997,6 @@ header{
                 transform: translateY(0);
                 animation: slideInBounce 0.8s ease-out;
             }
-        }
-        
-        &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(0, 136, 255, 0.3), 
-                transparent);
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
         }
         
         &::after {
@@ -1202,7 +1037,6 @@ header{
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         position: relative;
         
-        // Анимация при прокрутке
         &.animate-on-scroll {
             opacity: 0;
             transform: translateY(20px);
@@ -1233,8 +1067,7 @@ header{
         transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         position: relative;
         overflow: hidden;
-        
-        // Эффект блика
+      
         &::before {
             content: '';
             position: absolute;
@@ -1250,8 +1083,7 @@ header{
             transition: all 0.6s ease;
             opacity: 0;
         }
-        
-        // Анимация при прокрутке
+     
         &.animate-on-scroll {
             opacity: 0;
             transform: translateY(30px) scale(0.95);
@@ -1289,7 +1121,6 @@ header{
         gap: 30px;
         position: relative;
         
-        // Анимация при прокрутке
         &.animate-on-scroll {
             opacity: 0;
             transform: translateX(-30px);
@@ -1327,7 +1158,6 @@ header{
             overflow: hidden;
             animation: fadeInRight 0.8s ease-out 0.8s both;
             
-            // Эффект рамки при наведении
             &::before {
                 content: '';
                 position: absolute;
@@ -1657,22 +1487,16 @@ footer{
 .otdel__info{
     position: relative;
     z-index: 10;
-    
-    // Если секция видна, дочерние элементы тоже должны быть видны быстрее
     &.visible {
         .cards .card.animate-on-scroll {
-            // Если карточки в видимой секции еще не имеют класса visible, показываем их быстрее
             opacity: 1 !important;
             transform: translateY(0) scale(1) !important;
             animation: fadeInScale 0.4s ease-out;
         }
     }
-    
-    // Для элементов, которые видны сразу при загрузке (верх страницы)
     .cards .card:first-child.animate-on-scroll,
     .cards .card:nth-child(2).animate-on-scroll,
     .cards .card:nth-child(3).animate-on-scroll {
-        // Первые три карточки показываем быстрее
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
     
@@ -1697,7 +1521,6 @@ footer{
             overflow: hidden;
             cursor: pointer;
             
-            // Анимация при прокрутке с задержкой для каждой карточки
             &.animate-on-scroll {
                 opacity: 0;
                 transform: translateY(50px) scale(0.95);
@@ -1709,23 +1532,6 @@ footer{
                 }
             }
             
-            // Эффект блика
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, 
-                    transparent, 
-                    rgba(0, 136, 255, 0.15), 
-                    transparent);
-                transition: left 0.8s ease;
-                z-index: 1;
-            }
-            
-            // Декоративный градиент на карточке
             &::after {
                 content: '';
                 position: absolute;
@@ -1751,10 +1557,6 @@ footer{
                     rgba(255, 255, 255, 0.25), 
                     rgba(250, 235, 215, 0.98));
                 border-color: rgba(0, 136, 255, 0.4);
-                
-                &::before {
-                    left: 100%;
-                }
                 
                 &::after {
                     opacity: 1;
@@ -1858,7 +1660,6 @@ footer{
                     border-radius: 28px;
                     position: relative;
                     
-                    // Анимация при прокрутке
                     &.animate-on-scroll {
                         opacity: 0;
                         transform: translateX(-30px) scale(0.9);
@@ -1881,7 +1682,6 @@ footer{
                         object-fit: cover;
                         position: relative;
                         
-                        // Эффект рамки при наведении
                         &::before {
                             content: '';
                             position: absolute;
@@ -1901,7 +1701,6 @@ footer{
                             animation: gradientShift 3s ease infinite;
                         }
                         
-                        // Эффект блика
                         &::after {
                             content: '';
                             position: absolute;
@@ -1942,7 +1741,6 @@ footer{
                     border-radius: 28px;
                     position: relative;
                     
-                    // Анимация при прокрутке
                     &.animate-on-scroll {
                         opacity: 0;
                         transform: translateX(30px) scale(0.9);
@@ -1963,7 +1761,6 @@ footer{
                             0 0 0 0 rgba(0, 136, 255, 0);
                         position: relative;
                         
-                        // Эффект рамки при наведении
                         &::before {
                             content: '';
                             position: absolute;
@@ -2017,7 +1814,6 @@ footer{
     position: relative;
     overflow: hidden;
     
-    // Декоративные элементы
     &::before {
         content: '';
         position: absolute;
@@ -2033,7 +1829,6 @@ footer{
         pointer-events: none;
     }
     
-    // Анимация при прокрутке
     &.animate-on-scroll {
         opacity: 0;
         transform: translateY(50px);
@@ -2060,7 +1855,6 @@ footer{
         0 0 0 0 rgba(0, 136, 255, 0);
     border: 2px solid transparent;
     
-    // Анимация при прокрутке
     &.animate-on-scroll {
         opacity: 0;
         transform: scale(0.9) translateY(30px);
@@ -2070,43 +1864,6 @@ footer{
             transform: scale(1) translateY(0);
             animation: zoomIn 0.8s ease-out;
         }
-    }
-    
-    // Эффект рамки при наведении
-    &::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        border-radius: 14px;
-        background: linear-gradient(45deg, 
-            rgba(0, 136, 255, 0.5), 
-            rgba(0, 136, 255, 0.3),
-            rgba(0, 136, 255, 0.5));
-        background-size: 200% 200%;
-        z-index: -1;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-        animation: gradientShift 4s ease infinite;
-    }
-    
-    // Эффект блика
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.3), 
-            transparent);
-        transition: left 0.6s ease;
-        z-index: 1;
-        pointer-events: none;
     }
     
     p{
@@ -2152,16 +1909,11 @@ footer{
 }
 
 
-
 @media (max-width: 960px) {
 .video-wrapper iframe {
     width: 100%;
     height: 400px;
 }
-
-// Отключаем единые стили слайдера в адаптиве 960px
-
-
 .slide-text {
     text-align: center !important;
     font-size: 24px !important;
@@ -2171,7 +1923,6 @@ footer{
     animation: none !important;
     text-shadow: none !important;
 }
-
 header {
     .header__top {
         width: 960px;
@@ -2179,9 +1930,10 @@ header {
             justify-content: end;
             ul{
                 li{
-                    margin-right: 18px;
+                    margin-right: 10px;
                     a {
                         font-size: 18px; 
+                        padding: 6px 12px;
                     }
                 } 
             } 
@@ -2202,7 +1954,6 @@ header {
     }
 }
 
-// Убираем hover анимации в адаптиве
 .information {
     .hist:hover,
     .put:hover {
@@ -2288,7 +2039,6 @@ footer {
     .footer__social a:hover {
         transform: none;
     }
-    
     .footer__social img:hover {
         transform: none;
     }
@@ -2299,7 +2049,6 @@ footer {
     position: relative;
     z-index: 10;
     
-    // Анимация при прокрутке
     &.animate-on-scroll {
         opacity: 0;
         transform: translateY(50px);
@@ -2328,13 +2077,12 @@ footer {
         animation: fadeIn 1s ease-out 1.2s both, gradientShift 3s ease infinite;
     }
     
-    // Декоративные элементы
     &::after {
         content: '';
         position: absolute;
         top: 50%;
         left: -10%;
-        width: 120%;
+        width: 100%;
         height: 2px;
         background: linear-gradient(90deg, 
             transparent, 
@@ -2358,7 +2106,6 @@ footer {
     transition: all 0.3s ease;
     border: 2px solid transparent;
     
-    // Эффект рамки при наведении
     &::before {
         content: '';
         position: absolute;
@@ -2411,7 +2158,6 @@ footer {
     }
 }
 
-// Анимации переключения слайдов
 .slide {
     &.slide-in-left {
         animation: slideInFromLeft 0.8s ease-out;
@@ -2447,7 +2193,6 @@ footer {
     overflow: hidden;
     border: 2px solid transparent;
     
-    // Анимация при прокрутке
     &.animate-on-scroll {
         opacity: 0;
         transform: scale(0.9) translateY(20px);
@@ -2459,7 +2204,6 @@ footer {
         }
     }
     
-    // Эффект рамки
     &::before {
         content: '';
         position: absolute;
@@ -2479,7 +2223,6 @@ footer {
         animation: gradientShift 3s ease infinite;
     }
     
-    // Эффект блика
     &::after {
         content: '';
         position: absolute;
@@ -2535,7 +2278,6 @@ footer {
     border: 2px solid transparent;
     filter: brightness(0.95) contrast(1.05);
     
-    // Анимация при прокрутке
     &.animate-on-scroll {
         opacity: 0;
         transform: scale(0.9) translateY(20px);
@@ -2547,7 +2289,6 @@ footer {
         }
     }
     
-    // Эффект рамки
     &::before {
         content: '';
         position: absolute;
@@ -2567,7 +2308,6 @@ footer {
         animation: gradientShift 3s ease infinite;
     }
     
-    // Эффект блика
     &::after {
         content: '';
         position: absolute;
@@ -2647,7 +2387,6 @@ footer {
     position: relative;
     overflow: hidden;
     
-    // Эффект блика
     &::before {
         content: '';
         position: absolute;
@@ -2662,7 +2401,6 @@ footer {
         z-index: 0;
     }
     
-    // Эффект пульсации
     &::after {
         content: '';
         position: absolute;
@@ -2791,6 +2529,7 @@ footer .footer {
 } 
 }
 
+
 @media (max-width: 540px) {
 .video-wrapper{
 iframe {
@@ -2807,7 +2546,6 @@ p{
     padding: 14px 0;
 }
 
-// Анимации для табов в мобильном адаптиве 540px
 .tab-btn {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     
@@ -2861,20 +2599,17 @@ p{
     }
 }
 
-// Отключаем анимации переключения слайдов на мобильных
 .slide {
     &.slide-in-left,
     &.slide-in-right {
         animation: none !important;
     }
     
-    // Отключаем inline анимации на мобильных
     &[style*="animation"] {
         animation: none !important;
     }
 }
 
-// Отключаем единые стили слайдера в мобильном адаптиве 540px
 .slider-section .slider .slider-controls .slider-btn {
     background: black !important;
     color: white !important;
@@ -2909,9 +2644,6 @@ p{
     text-shadow: none !important;
 }
 
-
-
-// Адаптивные размеры для фото и карт в мобильном
 .otdel__info .cards .card {
     .card__info {
         flex-direction: column;
@@ -2933,6 +2665,7 @@ p{
         }
         
         .card__map {
+            display: none;
             flex: none;
             width: 100%;
             max-width: 100%;
@@ -2954,7 +2687,6 @@ p{
     }
 }
 
-// Убираем hover анимации в мобильном адаптиве
 .information {
     .hist:hover,
     .put:hover {
@@ -3276,8 +3008,7 @@ footer .footer {
   padding: 6px;
   z-index: 3000;
 }
-
-// Анимации для адаптива 540px
+}
 @media (max-width: 540px) {
     .animate-on-scroll {
         opacity: 0;
@@ -3331,5 +3062,6 @@ footer .footer {
             transform: scale(1);
         }
     }
+    
 }
-}
+
