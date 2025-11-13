@@ -2723,9 +2723,7 @@ footer .footer .footer__social ul li:last-child {
   }
   .otdel__info .cards .card .card__info .card__map .cr__map {
     display: none;
-    width: 100%;
     max-width: 100%;
-    height: 160px;
     border-radius: 8px;
     overflow: hidden;
   }
